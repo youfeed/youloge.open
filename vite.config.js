@@ -7,13 +7,10 @@ export default defineConfig({
   build:{
     rollupOptions:{
       input:{
-        'index':'./index.html',
-        '6/sso233':'sso.html',
+        'index':'index.html',
+        'sso':'sso.html',
       },
-      output: {
-        banner: '/* my-library version 0.0.1 */',
-        footer: '/* follow me on Twitter! @rich_harris */',
-      }
+      output: {}
     },
   },
   plugins: [vue()],
