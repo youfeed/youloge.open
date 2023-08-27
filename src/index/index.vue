@@ -72,7 +72,7 @@ import { version } from '/package.json'
       background: #646cff;
       a{
         cursor: pointer;
-        text-decoration: underline;
+        text-decoration: none;
         color:#fff;
       }
     }

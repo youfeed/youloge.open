@@ -14,5 +14,12 @@ export default defineConfig({
       output: {}
     },
   },
+  css:{
+    preprocessorOptions:{
+      scss: {
+        additionalData: `@import "/src/assets/scss/index.scss";`
+      }
+    }
+  },
   plugins: [vue()],
 })
