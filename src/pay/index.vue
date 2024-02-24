@@ -6,14 +6,15 @@
     </div>
 
     <div class="body">
-      <div>No.{{uuid}}</div>
+      <div>支付账户：{{uuid}}</div>
+      <div>渠道账户：{{uuid}}</div>
     </div>
     
     <div class="foot">
-      <button @click="onRetry"> 重新尝试支付 </button>
+      <button @click="onRetry"> 立即支付 重新尝试支付 </button>
     </div>
-    <div class="version">{{ version }}</div>
-  </div>
+    <div class="version">人工通道·海外渠道·大额充值-></div>
+  </div> 
 </template>
 <script setup>
 import { computed, onMounted, reactive, toRefs } from 'vue';
@@ -25,21 +26,18 @@ const state = reactive({
   state:'',
   uuid:'',
   config:[], // 多渠道
-  payment:null
-})
-const onMoney = computed(()=>`￥ - ${Number(state.money).toFixed(2)}`)
+  payment:null,
+  ukey:'qRjE+HMLB8WcnAvdcon5Lx2BSGid7OdQUd5ozRV8QHj4sgP91+Y6xMfhrHZbONGpLErJGMZFZ8GAcEwINSE4VjwdEvna0DwHUJ3zzQNFlQg8s8nhqo4/I3y00q31eYi4',
+});
+const onMoney = computed(()=>`# ${(Number(state.money) / 100).toFixed(2)} RGB`);
 // 微信支付宝直接支付 银行卡支付不在这里
 const URLQuery = (query = {})=>{
-  new URL(location.href).searchParams.forEach((value, key)=>query[key] = value);return query
+  new URL(location.href).searchParams.forEach((value, key)=>query[key] = value);return query;
 }
 // 网络请求
-const onRequset = (path,method,params={},SLD='api')=>{
-  let body = {method:method,params:params};
-  return fetch(`https://${SLD}.youloge.com/${path}`,{method:'post',body:JSON.stringify(body)}).then(r=>r.json()).then(r=>r).catch(e=>e)
-}
 const onFetch = (method='',params={})=>{
   let body = {method:method,params:params};
-  return fetch('https://api.youloge.com',{method:'post',body:JSON.stringify(body)}).then(r=>r.json()).then(r=>{ return r; }).catch(e=>{ return e; })
+  return fetch('https://api.youloge.com/wallet',{method:'post',headers:{ukey:state.ukey},body:JSON.stringify(body)}).then(r=>r.json()).then(r=>{ return r; }).catch(e=>{ return e; })
 }
 // 微信支付
 const onWeixin = ()=>{
@@ -48,22 +46,17 @@ const onWeixin = ()=>{
   let enURI = encodeURIComponent(location.href);
   let uri = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx87a7ba6752f6be0b&redirect_uri=${enURI}&response_type=code&scope=snsapi_base&state=weixin#wechat_redirect`
   code || (location.href = uri);
-  code && onRequset().then(res=>{
-
-  })
-  
-  // onFetch('codepay',{appid:'wx87a7ba6752f6be0b',uuid:uuid,money:money,code:code}).then(payment=>{
-  //   state.payment = payment;history.pushState({},null,'/');
-  //   WeixinJSBridge.invoke('getBrandWCPayRequest',{...payment},function({err_msg}){
-  //     err_msg == 'get_brand_wcpay_request:ok' && onClose()
-  //   })
-  // });
-} 
+  code && onFetch('codepay',{appid:'wx87a7ba6752f6be0b',uuid:uuid,money:money,code:code}).then(payment=>{
+    state.payment = payment;history.pushState({},null,'/');
+    WeixinJSBridge.invoke('getBrandWCPayRequest',{...payment},function({err_msg}){
+      err_msg == 'get_brand_wcpay_request:ok' && onClose()
+    })
+  });
+}
 // 支付宝支付
-const onAlipay = (e)=>{
+const onAlipay = ()=>{
   state.mode = 'alipay'
   let {auth_code,uuid,money} = state;
-  
   let enURI = encodeURIComponent(location.href);
   let uri = `https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2017101909382003&scope=auth_base&redirect_uri=${enURI}&state=alipay#alipay_redirect`
   auth_code || (location.href = uri);
@@ -92,8 +85,9 @@ const onClose = ()=>{
 }
 // 初始监听
 onMounted(()=>{
+  // window.self === window.top && (location.href ='/');
   let {code,auth_code,u,m} = URLQuery();
-  state.code = code;state.auth_code = auth_code;state.uuid = u;state.money = Math.max(0.01,Number(m)).toFixed(2);
+  state.code = code;state.auth_code = auth_code;state.uuid = u;state.money = Math.max(1,Number(m));
   document.addEventListener('AlipayJSBridgeReady', onAlipay, false);
   document.addEventListener('WeixinJSBridgeReady', onWeixin, false);
 })

@@ -1,5 +1,5 @@
 <template>
-  <div class="sso"  @click.stop="onCloseAll" fixed top-0 left-0 w-full h-full flex items-center justify-center>
+  <div class="sso"  @click.stop="onCloseAll" fixed top-0 left-0 w-full h-full flex items-center justify-center  :class="{loading:loading}">
     <div class="layout" ref="ref" bg-white rounded shadow-lg m-2>
 
       <div class="head">
@@ -72,14 +72,14 @@
  */
 import { computed, markRaw, onMounted, reactive, toRefs } from "vue";
 const state = reactive({
-  name:'youloge.sso',
-  version:'v1.1.4',
+  name:'youloge.login',
+  version:'v1.1.8',
   hash:location.hash,
   referrer:document.referrer,
   uage:navigator.language.toLowerCase(),
   ukey:'',
   mask:false,
-
+  loading:true,
   account:[], // 本地缓存账户
   // 选中账户
   toggled:{
@@ -111,22 +111,23 @@ const lang = (key)=>({
 }[key][+!state.uage.startsWith('zh')]);
 onMounted(()=>{
   // 禁止本地
-  // window.self === window.top ? location.href ='/' : 
-  SendMessage('ready',{msg:'youloge.sso is ready'});
+  window.self === window.top ? location.href ='/' : SendMessage('ready',{msg:'youloge.login is ready'});
   // 接收初始参数
   const {referrer,hash,ukey} = state;
   window.addEventListener('message',({origin,data,source})=>{
     let {method,params} = data[hash] || {};
+    console.log('init',state,data);
     if(referrer.startsWith(origin) && method && ukey == ''){
       let work = {
         'init':()=>{
           state.host = new URL(origin).hostname;
           ({
-            close:state.close = true,
             ukey:state.ukey,
-            uuid:state.uuid = null
+            close:state.close = false,
+            uuid:state.uuid = null 
           } = params)
           params.ukey.length < 64 && SendMessage('error',{msg:'Ukey undefined'});
+          state.loading = false;
           onRefresh();
         }
       };
@@ -136,14 +137,12 @@ onMounted(()=>{
   // 64fe236d29b069848f0d0402
   window.grecaptcha.ready(()=>{
     window.grecaptcha.execute(state.grecaptcha, {action: 'submit'}).then((token)=>{
-      console.log(grecaptcha,token)
-
+      // console.log(grecaptcha,token)
     })
   })       
 })
 const getStorage = (key)=>JSON.parse(localStorage.getItem(key) || '[]');
 const setStorage = (key,val=[])=>localStorage.setItem(key,JSON.stringify(val));
-const sso = computed(()=>['sso',{'mask':state.mask}])
 
 // 关联账户
 const onToggle = ()=>{
@@ -210,7 +209,7 @@ const onAuthorize = ()=>{
   })
 }
 // 发起请求 params [] 批量 {} 单条
-const onFetch = (method,params={})=>(state.mask = true,new Promise((resolve,reject)=>{
+const onFetch = (method,params={})=>(state.loading = true,new Promise((resolve,reject)=>{
   fetch('https://api.youloge.com/login',{
     method:'post',
     headers:{ukey:state.ukey,lang:state.lang,"Content-Type": "application/json"},
@@ -220,13 +219,12 @@ const onFetch = (method,params={})=>(state.mask = true,new Promise((resolve,reje
   }).catch(err=>{
     reject(err);
   }).finally(()=>{
-    state.mask = false;
+    state.loading = false;
   })
 }))
 // 关闭遮罩
 const onCloseAll = (e)=>{
-  let {close,ref} = state;
-  close && ref.contains(e.target) || SendMessage('error',{msg:'遮罩层关闭'})
+  state.ref.contains(e.target) || state.close &&  SendMessage('error',{msg:'遮罩层关闭'});
 }
 // 关闭弹窗
 const onClose = ()=>SendMessage('error',{msg:'关闭按钮关闭'})
@@ -236,11 +234,10 @@ const SendMessage = (method,params={})=>{
   console.log(method,params,referrer,hash,2);
   referrer && window.parent.postMessage({ [hash]:{method:method,params:params} }, referrer);
 }
-const {ref,msg,host,mode,close,account,version,toggled} = toRefs(state)
+const {ref,msg,host,mode,close,account,version,toggled,loading} = toRefs(state)
 </script>
 
 <style lang="scss">
-// *{margin: 0;padding: 0;}
 .grecaptcha-badge{visibility: hidden;}
 
 .sso{
@@ -476,5 +473,24 @@ const {ref,msg,host,mode,close,account,version,toggled} = toRefs(state)
 ::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 5px;
+}
+.loading{
+  pointer-events: none;
+  opacity: 0.9;
+}
+.loading::before{
+  z-index: 1000;
+  content: '';
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  border: 2px solid #000;
+  border-top-color: transparent;
+  border-radius: 100%;
+  animation: 0.5s keyloading infinite;
+}
+@keyframes keyloading {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
 }
 </style>

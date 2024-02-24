@@ -1,7 +1,7 @@
 {
   "name": "youloge.open",
   "private": false,
-  "version": "0.0.5",
+  "version": "0.0.7",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,11 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "youloge": "^1.7.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
     "sass": "^1.66.1",
+    "unocss": "^0.56.1",
     "vite": "^4.4.5"
   }
 }

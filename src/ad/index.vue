@@ -1,14 +1,14 @@
 <template>
-  <section>
-    <figcaption>
-      <img src="https://th.bing.com/th/id/OIP.ZjonDgr8gSdO3xlLbcDfMwHaDt?w=321&h=174&c=7&r=0&o=5&pid=1.7" alt="" >
-      <div class="title">
-        <div>这是一个广告服务 默认16：9</div>
-        <button @click="onjump">立即购买</button>
+  <div class="y-ad" relative>
+    <section>
+      <figcaption>
+        <img src="https://temp.im/800x200/4CD964/fff" alt="" max-w-full>
+      </figcaption>
+      <div class="spread" fixed top-1 right-1 bg-slate-50 p-1 rounded>
+        <a :href="href" target="_blank" decoration-wavy text-gray-700 hover:text-gray-900>访问赞助商</a>
       </div>
-    </figcaption>
-    <div class="spread">推广</div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <script setup>
@@ -26,9 +26,13 @@ const state = reactive({
   hash:location.hash,
   referrer:document.referrer,
   uage:navigator.language.toLowerCase(),
-  ukey:''
+  ukey:'',
+  href:'https://developer.qiniu.com/mkt/7261/cps-promotion-rules'
 })
 onMounted(() => {
+  let {innerHeight,innerWidth} = window;
+  let {clientWidth,clientHeight} = document.body;
+  console.log(innerHeight,innerWidth,clientWidth,clientHeight)
   // 禁止本地
   sendMessage('ready',{msg:'youloge.ad is ready'});
   // window.self === window.top ? location.href ='/' : SendMessage('ready',{msg:'youloge.ad is ready'});
@@ -60,24 +64,9 @@ const onjump = (url) => {
 const sendMessage = (method,params) => {
   let {hash,referrer} = state;window.opener?.postMessage({ [hash]:{method:method,params:params} }, referrer);
 }
-const {} = toRefs(state)
+const {href} = toRefs(state)
 </script>
 
 <style lang="scss">
-figcaption .title{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 60px;
-}
-.spread{
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-size: 12px;
-  color: #b3b3b3;
-  background: #9e9e9e61;
-  padding: 2px 5px;
-  cursor: pointer;
-}
+*{margin: 0;padding: 0;}
 </style>
