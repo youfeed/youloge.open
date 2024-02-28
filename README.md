@@ -2,6 +2,10 @@
 
 ### 该项目下站点页面只能<font color=#FF000 >iframe</font>方式引入，这是个通用组件
 
+> 更新支持 多入口`pages`打包，并迁移跟根目录 并去除`.html`后缀，让页面更简洁，更方便使用 可直接将`dist`目录批量覆盖给云存储
+
+> 没有`.html` 后缀 如何让网页文件不缓存呢？
+
 目前组件有：
 - open.youloge.com/sso 单点登录
 - open.youloge.com/gift 礼品

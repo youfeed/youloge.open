@@ -1,7 +1,11 @@
 import { defineConfig } from 'vite'
+
+import path from 'path'
 import UnoCSS from 'unocss/vite'
 import vue from '@vitejs/plugin-vue'
-let mode = 'SPA'; // SPA MPA
+let mode = 'MPA'; // SPA MPA
+import {pages,renameHTML} from './vite.build.js'
+console.log('pages',pages)
 export default defineConfig({
   build:{
     polyfillModulePreload:false,
@@ -23,18 +27,7 @@ export default defineConfig({
       // 多入口
       'MPA':{
         external: ['vue','youloge'],
-        input:{
-          'ad':'ad.html',
-          'sso':'sso.html',
-          'pay':'pay.html',
-          'link':'link.html',
-          'index':'index.html',
-          'login':'login.html',
-          'video':'video.html',
-          'captcha':'captcha.html',
-          'payment':'payment.html',
-          'shopcart':'shopcart.html',
-        },
+        input:pages(),
         output: {
           // entryFileNames:'assets/[name].js', // 要么刷新html 文件 要么 刷新js文件 CDN缓存你总要刷新一个
           globals: {
@@ -52,8 +45,11 @@ export default defineConfig({
       }
     }
   },
-  plugins: [vue(),UnoCSS()],
-  // server: {
-  //   host: 'localhost.youloge.com',
-  // }
+  resolve:{
+    alias:{
+      '@':path.resolve(__dirname,'src'),
+      '#':path.resolve(__dirname,'lib'),
+    }
+  },
+  plugins: [vue(),UnoCSS(),renameHTML()],
 })
