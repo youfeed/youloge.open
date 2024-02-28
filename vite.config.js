@@ -1,11 +1,15 @@
-import { defineConfig } from 'vite'
-
 import path from 'path'
 import UnoCSS from 'unocss/vite'
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-let mode = 'MPA'; // SPA MPA
 import {pages,renameHTML} from './vite.build.js'
-console.log('pages',pages)
+import { viteExternalsPlugin } from 'vite-plugin-externals'
+let mode = 'MPA'; // SPA MPA
+const cdn = ()=>{
+  return viteExternalsPlugin({
+    vue: 'Vue',
+  })
+}
 export default defineConfig({
   build:{
     polyfillModulePreload:false,
@@ -51,5 +55,9 @@ export default defineConfig({
       '#':path.resolve(__dirname,'lib'),
     }
   },
-  plugins: [vue(),UnoCSS(),renameHTML()],
+  external: ['vue'],
+  paths:{
+    'vue':'https://unpkg.com/vue@next'
+  },
+  plugins: [vue(),cdn(),UnoCSS(),renameHTML()],
 })
