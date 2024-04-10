@@ -23,21 +23,15 @@ const state = reactive({
 });
 onMounted(()=>{
   let Params = new URL(location.href).searchParams
-  state.hash = Params.get('hash')
+  let hash = Params.get('hash')
   let method = Params.get('state')
   let params = Params.get('code')
   if(method && params){
-    SendMessage(method,params)
+    localStorage.setItem('youloge.sso',new Date().getTime())
   }
   // 关闭窗口 与跳转
-  // window.close();location.href ='/';
+  window.close();location.href ='/';
 })
-// SendMessage
-const SendMessage = (method,params={})=>{
-  let {hash,referrer} = state;
-  console.log(hash,referrer,method,params)
-  referrer && window.parent.postMessage({ [hash]:{method:method,params:params} }, referrer);
-}
 const {name} = toRefs(state)
 </script>
 

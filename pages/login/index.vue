@@ -131,7 +131,7 @@ onMounted(()=>{
   // 接收初始参数
   const {referrer,hash,ukey} = state;
   window.addEventListener('message',({origin,data,source})=>{
-    console.log('init000000000',hash,data,params)
+    console.log('init000000000',hash,data,source)
     let {method,params} = data[hash] || {};
     if(referrer.startsWith(origin) && method && ukey == ''){
       let work = {
@@ -167,8 +167,18 @@ const getStorage = (key)=>JSON.parse(localStorage.getItem(key) || '[]');
 const setStorage = (key,val=[])=>localStorage.setItem(key,JSON.stringify(val));
 
 // 监听缓存
-window.onstorage = ()=>{
-  console.log('onstorage',state,window.localStorage);
+window.onstorage = ({key,url})=>{
+  if(key == 'youloge.sso'){
+    let Params = new URL(url).searchParams;
+    let [hash,type] = Params.get('state').split('.');
+    let code = Params.get('code');
+    if(hash == state.hash){
+      onFetch(`login/${type}`,{code:code}).then(res=>{
+        console.log(res)
+      })
+    }
+    console.log('onstorage',Params,url);
+  }
 }
 // 关联账户
 const onToggle = ()=>{
@@ -224,15 +234,18 @@ const onRefresh = ()=>{
 // 第三方登录
 const onGithub = ()=>{
   let {hash} = state;
-  // 弹窗提示错误
-  let url = encodeURI(`https://open.youloge.com/sso?hash=${hash}`)
-  window.open(`https://github.com/login/oauth/authorize?client_id=dbd8d6f97cebac5b5e28&redirect_uri=${url}&scope=user:email&state=github`,
+  let url = encodeURI(`https://open.youloge.com/sso`);
+  window.open(`https://github.com/login/oauth/authorize?client_id=dbd8d6f97cebac5b5e28&redirect_uri=${url}&scope=email&state=${hash}.github`,
   'Github',
   'popup=1,left=300,top=300,width=500,height=600');
-  console.log('onGithub')
 }
 // 第三方登录 
 const onGoogle = ()=>{
+  let {hash} = state;
+  let url = encodeURI(`https://open.youloge.com/sso`)
+  window.open(`https://accounts.google.com/o/oauth2/v2/auth?scope=email&response_type=code&redirect_uri=${url}&client_id=30683847898-g1tn8raicpcedg07j0tdinj0mknd59t3.apps.googleusercontent.com&state=${hash}.google`,
+  'Google',
+  'popup=1,left=300,top=300,width=500,height=600');
   console.log('onGoogle')
 }
 // 授权签名
