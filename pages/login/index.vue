@@ -31,6 +31,22 @@
             <div class="mail" v-text="lang('newlogin')"></div>
           </div>
         </div>
+        <div class="profile" @click="onGithub">
+          <div class="avatar">
+            <svg t="1712744687732" class="icon" viewBox="0 0 1206 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9136" width="100%" height="100%"><path d="M139.995429 262.546286s-122.294857 127.963429-101.046858 336.164571c21.248 208.237714 153.088 380.050286 592.749715 380.050286 439.625143 0 550.217143-229.485714 552.813714-418.230857 2.596571-188.672-82.395429-272.822857-122.294857-301.458286 0 0 0.256-135.460571-12.544-207.030857 0 0-67.657143-8.009143-213.76 75.702857 0 0-199.460571-19.492571-465.261714 2.377143 0 0-111.652571-74.605714-224.146286-94.134857 0 0-18.651429 117.467429-6.509714 226.56z" fill="#333333" p-id="9137"></path><path d="M336.859429 468.662857h545.499428s154.587429-17.371429 154.587429 235.52c1.243429 222.573714-407.369143 208.201143-407.369143 208.201143s-447.488 17.773714-447.744-229.266286c-0.585143-223.085714 155.026286-214.454857 155.026286-214.454857z" fill="#E2B89F" p-id="9138"></path><path d="M832.621714 570.185143c35.072 0 63.524571 45.714286 63.524572 101.924571 0 56.32-28.452571 101.961143-63.524572 101.961143-35.035429 0-63.488-45.641143-63.488-101.961143-0.036571-56.210286 28.452571-101.924571 63.488-101.924571z" fill="#9C584F" p-id="9139"></path><path d="M832.621714 792.356571c-45.860571 0-81.773714-52.809143-81.773714-120.246857 0-67.401143 35.913143-120.210286 81.773714-120.210285 45.897143 0 81.810286 52.809143 81.810286 120.210285 0 67.437714-35.949714 120.246857-81.810286 120.246857z m0-203.885714c-21.394286 0-45.202286 34.340571-45.202285 83.638857 0 49.334857 23.808 83.675429 45.202285 83.675429s45.238857-34.340571 45.238857-83.675429c0-49.298286-23.844571-83.638857-45.238857-83.638857z" fill="#FFFFFF" p-id="9140"></path><path d="M393.764571 570.185143c35.072 0 63.524571 45.714286 63.524572 101.924571 0 56.32-28.452571 101.961143-63.524572 101.961143-35.035429 0-63.488-45.641143-63.488-101.961143-0.036571-56.210286 28.452571-101.924571 63.488-101.924571z" fill="#9C584F" p-id="9141"></path><path d="M393.764571 792.356571c-45.860571 0-81.773714-52.809143-81.773714-120.246857 0-67.401143 35.913143-120.210286 81.773714-120.210285 45.860571 0 81.810286 52.809143 81.810286 120.210285 0 67.437714-35.949714 120.246857-81.810286 120.246857z m0-203.885714c-21.394286 0-45.202286 34.340571-45.202285 83.638857 0 49.334857 23.808 83.675429 45.202285 83.675429s45.238857-34.340571 45.238858-83.675429c0-49.298286-23.844571-83.638857-45.238858-83.638857z" fill="#FFFFFF" p-id="9142"></path><path d="M587.922286 793.782857s18.249143-51.858286 40.557714-3.254857c0 0-16.713143 10.861714-10.422857 36.425143l52.224 19.968h-118.125714l46.811428-21.028572s6.729143-38.619429-11.044571-32.109714z" fill="#9C584F" p-id="9143"></path></svg>
+          </div>
+          <div class="account ">
+            <div class="names" style="color:#03a9f4">GITHUB 快捷登录</div>
+          </div>
+        </div>
+        <div class="profile" @click="onGoogle">
+          <div class="avatar">
+            <svg t="1712745515149" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10142" width="100%" height="100%"><path d="M214.101333 512c0-32.512 5.546667-63.701333 15.36-92.928L57.173333 290.218667A491.861333 491.861333 0 0 0 4.693333 512c0 79.701333 18.858667 154.88 52.394667 221.610667l172.202667-129.066667A290.56 290.56 0 0 1 214.101333 512" fill="#FBBC05" p-id="10143"></path><path d="M516.693333 216.192c72.106667 0 137.258667 25.002667 188.458667 65.962667L854.101333 136.533333C763.349333 59.178667 646.997333 11.392 516.693333 11.392c-202.325333 0-376.234667 113.28-459.52 278.826667l172.373334 128.853333c39.68-118.016 152.832-202.88 287.146666-202.88" fill="#EA4335" p-id="10144"></path><path d="M516.693333 807.808c-134.357333 0-247.509333-84.864-287.232-202.88l-172.288 128.853333c83.242667 165.546667 257.152 278.826667 459.52 278.826667 124.842667 0 244.053333-43.392 333.568-124.757333l-163.584-123.818667c-46.122667 28.458667-104.234667 43.776-170.026666 43.776" fill="#34A853" p-id="10145"></path><path d="M1005.397333 512c0-29.568-4.693333-61.44-11.648-91.008H516.650667V614.4h274.602666c-13.696 65.962667-51.072 116.650667-104.533333 149.632l163.541333 123.818667c93.994667-85.418667 155.136-212.650667 155.136-375.850667" fill="#4285F4" p-id="10146"></path></svg>
+          </div>
+          <div class="account ">
+            <div class="names" style="color:#03a9f4">Google 快捷登录</div>
+          </div>
+        </div>
       </div>
 
       <div class="body normal" v-show="mode=='normal'">
@@ -74,7 +90,7 @@ import { computed, markRaw, onMounted, reactive, toRefs } from "vue";
 const state = reactive({
   name:'youloge.login',
   version:'v1.1.8',
-  hash:location.hash,
+  hash:location.hash.split('#').join(''),
   referrer:document.referrer,
   uage:navigator.language.toLowerCase(),
   ukey:'',
@@ -115,11 +131,13 @@ onMounted(()=>{
   // 接收初始参数
   const {referrer,hash,ukey} = state;
   window.addEventListener('message',({origin,data,source})=>{
+    console.log('init000000000',hash,data,params)
     let {method,params} = data[hash] || {};
-    console.log('init',state,data);
     if(referrer.startsWith(origin) && method && ukey == ''){
       let work = {
         'init':()=>{
+          // state.ukey = params.ukey;
+          console.log('init111111',hash,params)
           state.host = new URL(origin).hostname;
           ({
             ukey:state.ukey,
@@ -128,18 +146,22 @@ onMounted(()=>{
           } = params)
           params.ukey.length < 64 && SendMessage('error',{msg:'Ukey undefined'});
           state.loading = false;
-          onRefresh();
+          // onRefresh();
+        },
+        // github code
+        'github':()=>{
+          console.log('github',params)
         }
       };
       work[method] ? work[method]() : console.log('not method');
     }
   })
   // 64fe236d29b069848f0d0402
-  window.grecaptcha.ready(()=>{
-    window.grecaptcha.execute(state.grecaptcha, {action: 'submit'}).then((token)=>{
-      // console.log(grecaptcha,token)
-    })
-  })       
+  // window.grecaptcha.ready(()=>{
+  //   window.grecaptcha.execute(state.grecaptcha, {action: 'submit'}).then((token)=>{
+  //     // console.log(grecaptcha,token)
+  //   })
+  // })       
 })
 const getStorage = (key)=>JSON.parse(localStorage.getItem(key) || '[]');
 const setStorage = (key,val=[])=>localStorage.setItem(key,JSON.stringify(val));
@@ -159,7 +181,7 @@ const onCode = ()=>{
   let {mail} = state.toggled;state.sign = true;
   window.grecaptcha.execute(state.grecaptcha, {action: 'submit'}).then((token)=>{
     console.log(mail,token)
-    onFetch('code',{mail:mail,captcha:token}).then((data)=>{
+    onFetch('login/code',{mail:mail,captcha:token}).then((data)=>{
       state.toggled.access = data.access
       state.toggled.random = data.random
     }).catch((err)=>{
@@ -171,7 +193,7 @@ const onCode = ()=>{
 // 验证验证码
 const onSubmit = ()=>{
   let {access,code} = state.toggled;
-  onFetch('verify',{access:access,code:code}).then((data)=>{
+  onFetch('login/verify',{access:access,code:code}).then((data)=>{
     let {uuid,secret,expire} = data;
     state.toggled.uuid = uuid;
     state.toggled.secret = secret;
@@ -194,15 +216,29 @@ const onQuick = (event)=>{
 const onRefresh = ()=>{
   state.account = getStorage('account');
   let params = state.account.map(({secret})=>({secret:secret}));
-  params.length && onFetch('refresh',params).then(data=>{
+  params.length && onFetch('login/refresh',params).then(data=>{
     state.account = data.filter(item=>item.uuid);
     setStorage('account',state.account);
   });
 }
+// 第三方登录
+const onGithub = ()=>{
+  let {hash} = state;
+  // 弹窗提示错误
+  let url = encodeURI(`https://open.youloge.com/sso?hash=${hash}`)
+  window.open(`https://github.com/login/oauth/authorize?client_id=dbd8d6f97cebac5b5e28&redirect_uri=${url}&scope=user:email&state=github`,
+  'Github',
+  'popup=1,left=300,top=300,width=500,height=600');
+  console.log('onGithub')
+}
+// 第三方登录 
+const onGoogle = ()=>{
+  console.log('onGoogle')
+}
 // 授权签名
 const onAuthorize = ()=>{
   let {uuid,secret} = state.toggled;
-  onFetch('authorize',{secret:secret}).then(({signature,expire})=>{
+  onFetch('login/authorize',{secret:secret}).then(({signature,expire})=>{
     let account = state.account.find(item=>item.uuid == uuid);
     account.expire = expire;
     account.signature = signature;
@@ -213,11 +249,11 @@ const onAuthorize = ()=>{
   })
 }
 // 发起请求 params [] 批量 {} 单条
-const onFetch = (method,params={})=>(state.loading = true,new Promise((resolve,reject)=>{
-  fetch('https://api.youloge.com/login',{
+const onFetch = (router,params={})=>(state.loading = true,new Promise((resolve,reject)=>{
+  fetch(`https://api.youloge.com/${router}`,{
     method:'post',
     headers:{ukey:state.ukey,lang:state.lang,"Content-Type": "application/json"},
-    body:JSON.stringify({method:method,params:params})
+    body:JSON.stringify(params)
   }).then(r=>r.json()).then(({err,msg,data})=>{
     err == 200 ? resolve(data) : reject(msg);
   }).catch(err=>{
@@ -235,7 +271,6 @@ const onClose = ()=>SendMessage('error',{msg:'关闭按钮关闭'})
 // SendMessage
 const SendMessage = (method,params={})=>{
   let {hash,referrer} = state;
-  console.log(method,params,referrer,hash,2);
   referrer && window.parent.postMessage({ [hash]:{method:method,params:params} }, referrer);
 }
 const {ref,msg,host,mode,close,account,version,toggled,loading} = toRefs(state)
@@ -293,7 +328,7 @@ const {ref,msg,host,mode,close,account,version,toggled,loading} = toRefs(state)
         height: 70px;
         border-radius: 50%;
         overflow: hidden;
-        padding: 2px;
+        padding: 5px;
         img{
           max-width: 100%;
         }

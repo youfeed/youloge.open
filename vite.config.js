@@ -18,7 +18,7 @@ export default defineConfig({
       // 单入口 适合一个人维护一个模块使用 好处：灵活
       'SPA':{
         external: ['vue','youloge'],
-        input:'payment.html',
+        input:'login.html',
         output: {
           entryFileNames:'assets/[name].js',
           format: 'umd',

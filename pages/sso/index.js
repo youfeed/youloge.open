@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './index.vue'
 import 'virtual:uno.css'
 /**
- * TODO：
- * 支持 prifile.uuid 静默登录
+ * 第三方授权成功跳转页面
+ * 
  */
 createApp(App).mount('#app')
