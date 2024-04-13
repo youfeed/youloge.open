@@ -187,7 +187,7 @@ const onAccount = ()=>{
 }
 // 用户详情
 const onProfile = (mail)=>{
-  
+
 }
 // 关联账户
 const onToggle = ()=>{
@@ -231,11 +231,9 @@ const onQuick = (event)=>{
   // 尝试授权签名
   onAuthorize();
 }
-// 刷新登录 - refresh
-const onRefresh = ()=>{
-  state.account = getStorage('account');
-  let params = state.account.map(({secret})=>({secret:secret}));
-  params.length && onFetch('login/refresh',params).then(data=>{
+// 刷新登录
+const onRefresh = (signature)=>{
+  onFetch('login/refresh',{signature}).then(data=>{
     state.account = data.filter(item=>item.uuid);
     setStorage('account',state.account);
   });
