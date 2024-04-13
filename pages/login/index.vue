@@ -146,7 +146,7 @@ onMounted(()=>{
           } = params)
           params.ukey.length < 64 && SendMessage('error',{msg:'Ukey undefined'});
           state.loading = false;
-          onRefresh();
+          onAccount();
         },
         // github code
         'github':()=>{
@@ -165,7 +165,6 @@ onMounted(()=>{
 })
 const getStorage = (key)=>JSON.parse(localStorage.getItem(key) || '[]');
 const setStorage = (key,val=[])=>localStorage.setItem(key,JSON.stringify(val));
-
 // 监听缓存
 window.onstorage = ({key,url})=>{
   if(key == 'youloge.sso'){
@@ -179,6 +178,16 @@ window.onstorage = ({key,url})=>{
       })
     }
   }
+}
+// 本地账户
+const onAccount = ()=>{
+  state.account = getStorage('account');
+  let params = state.account.map(({mail})=>({mail:mail})); 
+  console.log(params)
+}
+// 用户详情
+const onProfile = (mail)=>{
+  
 }
 // 关联账户
 const onToggle = ()=>{
