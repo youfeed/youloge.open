@@ -19,9 +19,13 @@
             <div class="account">
               <div class="name">{{item.name}}</div>
               <div class="mail">{{item.mail}}</div>
-            </div> 
+            </div>
+            <!-- 快捷 秒登 -->
           </div>
         </template>
+        <div>
+
+        </div>
         <div class="profile" @click="onToggle">
           <div class="avatar">
             <img src="//img.youloge.com/FjjHFE7RwJqfjiwM9aqL4G53kPv3!80">
@@ -55,7 +59,7 @@
             <div class="field">
               <input id="mail" type="email" v-model="toggled.mail" required autocomplete="off">
               <label for="mail" :title="lang('email')" data-title="✔"></label>
-              <button class="getcode" @click="onCode" v-text="lang('otpcode')"></button>
+              <a class="getcode" @click="onCode" v-text="lang('otpcode')"></a>
             </div>
           </div>
           
@@ -66,9 +70,9 @@
             </div>
           </div>
           
-          <div>
-            <input class="sso-submit" type="submit" :value="lang('confirm')">
-            <input class="sso-cancel" type="reset"  :value="lang('reset')">
+          <div flex flex-row justify-between items-center>
+            <div v-text="lang('back')" @click="onBack" class="basis-1/4" w-8 h-6 color-blue-5 text-md fw300 m1 cursor-pointer></div>
+            <button type="submit"  v-text="lang('confirm')"  class="basis-1/2" from-current bg-blue color-white border-0 text-xl fw300 m1 p-1 cursor-pointer hover:op70 b-rd-1></button>
           </div>
         </form>
       </div>
@@ -123,6 +127,7 @@ const lang = (key)=>({
   otpcode:['安全验证码','OTP Code'],
   confirm:['确认','Confirm'],
   reset:['重置','Reset'],
+  back:['返回','Back'],
   afresh:['重新获取','Try Again']
 }[key][+!state.uage.startsWith('zh')]);
 onMounted(()=>{
@@ -199,7 +204,6 @@ const onToggle = ()=>{
 const onCode = ()=>{
   let {mail} = state.toggled;state.sign = true;
   window.grecaptcha.execute(state.grecaptcha, {action: 'submit'}).then((token)=>{
-    console.log(mail,token)
     onFetch('login/code',{mail:mail,captcha:token}).then((data)=>{
       state.toggled.access = data.access
       state.toggled.random = data.random
@@ -230,6 +234,10 @@ const onQuick = (event)=>{
   Object.assign(state.toggled,event);
   // 尝试授权签名
   onAuthorize();
+}
+// 返回登录
+const onBack = ()=>{
+ state.mode = 'quick';
 }
 // 刷新登录
 const onRefresh = (signature)=>{
@@ -404,7 +412,7 @@ const {ref,msg,host,mode,close,account,version,toggled,loading} = toRefs(state)
       color: #222;
       border: 1px solid #ccc;
       border-radius: 3px;
-      text-align: center;
+      // text-align: center;
     }
     .field input:focus {
       outline: 0;
@@ -417,7 +425,6 @@ const {ref,msg,host,mode,close,account,version,toggled,loading} = toRefs(state)
       color: blue;
     }
     input#mail:valid ~ .getcode{
-      display: block;
       color: blue;
     }
     input#mail{
@@ -435,42 +442,45 @@ const {ref,msg,host,mode,close,account,version,toggled,loading} = toRefs(state)
       position: absolute;
       right: 0;
       top: 0;
-      color: #2196F3;
+      color: #bdc5cb;
       border: 0;
       padding: 5px;
       background: transparent;
       cursor: pointer;
-      display: none;
       height: 100%;
-    }
-    input[type='submit'],input[type='reset']{
-      width: 100%;
-      height: 40px;
-      background: #09F;
-      color: #fff;
-      border: 1px solid #03A9F4;
-      border-radius: 3px;
-      margin-top: 20px;
-      cursor: pointer;
-      &:hover{
-        opacity: .7;
-      }
-    }
-    input[type='reset']{
-      background: #eee;
-      color: #333;
-      border: 1px solid #03A9F4;
-    }
-    .submit{
-      margin: 20px;
-      background: #09F;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 40px;
-      color: #fff;
-      cursor: pointer;
+      font-size: 14px;
     }
+    // input[type='submit'],input[type='reset']{
+    //   width: 100%;
+    //   height: 40px;
+    //   background: #09F;
+    //   color: #fff;
+    //   border: 1px solid #03A9F4;
+    //   border-radius: 3px;
+    //   margin-top: 20px;
+    //   cursor: pointer;
+    //   &:hover{
+    //     opacity: .7;
+    //   }
+    // }
+    // input[type='reset']{
+    //   background: #eee;
+    //   color: #333;
+    //   border: 1px solid #03A9F4;
+    // }
+    // .submit{
+    //   margin: 20px;
+    //   background: #09F;
+    //   display: flex;
+    //   align-items: center;
+    //   justify-content: center;
+    //   height: 40px;
+    //   color: #fff;
+    //   cursor: pointer;
+    // }
   }
   .foot{
     font-size: 12px;
