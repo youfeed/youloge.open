@@ -136,13 +136,13 @@ onMounted(()=>{
   // 接收初始参数
   const {referrer,hash,ukey} = state;
   window.addEventListener('message',({origin,data,source})=>{
-    console.log('init000000000',hash,data,source)
+ 
     let {method,params} = data[hash] || {};
     if(referrer.startsWith(origin) && method && ukey == ''){
       let work = {
         'init':()=>{
           // state.ukey = params.ukey;
-          console.log('init111111',hash,params)
+   
           state.host = new URL(origin).hostname;
           ({
             ukey:state.ukey,
@@ -155,7 +155,7 @@ onMounted(()=>{
         },
         // github code
         'github':()=>{
-          console.log('github',params)
+          // console.log('github',params)
         }
       };
       work[method] ? work[method]() : console.log('not method');
@@ -174,7 +174,7 @@ const setStorage = (key,val=[])=>localStorage.setItem(key,JSON.stringify(val));
 window.onstorage = ({key,url})=>{
   if(key == 'youloge.sso'){
     let Params = new URL(url).searchParams;
-    console.log('onstorage',Params,url);
+    // console.log('onstorage',Params,url);
     let [hash,type] = Params.get('state').split('.');
     let code = Params.get('code');
     if(hash == state.hash){
