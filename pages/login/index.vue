@@ -189,7 +189,7 @@ window.onstorage = ({key,url})=>{
 const onAccount = ()=>{
   state.account = getStorage('account');
   let params = state.account.map(({mail})=>({mail:mail})); 
-  console.log(params)
+  // console.log(params)
 }
 // 用户详情
 const onProfile = (mail)=>{
