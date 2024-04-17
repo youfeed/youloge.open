@@ -179,8 +179,7 @@ window.onstorage = ({key,url})=>{
     let code = Params.get('code');
     if(hash == state.hash){
       onFetch(`login/${type}`,{code:code}).then(res=>{
-        SendMessage('success',{msg:'登录成功',data:res});
-        // console.log(res)
+        res.err == 200 ? SendMessage('success',{msg:'登录成功',data:res}) : SendMessage('error',{msg:'登录失败',data:res})
       })
     }
   }
