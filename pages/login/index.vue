@@ -136,13 +136,10 @@ onMounted(()=>{
   // 接收初始参数
   const {referrer,hash,ukey} = state;
   window.addEventListener('message',({origin,data,source})=>{
- 
     let {method,params} = data[hash] || {};
     if(referrer.startsWith(origin) && method && ukey == ''){
       let work = {
         'init':()=>{
-          // state.ukey = params.ukey;
-   
           state.host = new URL(origin).hostname;
           ({
             ukey:state.ukey,
@@ -152,13 +149,21 @@ onMounted(()=>{
           params.ukey.length < 64 && SendMessage('error',{msg:'Ukey undefined'});
           state.loading = false;
           onAccount();
-        },
-        // github code
-        'github':()=>{
-          // console.log('github',params)
         }
       };
       work[method] ? work[method]() : console.log('not method');
+    }
+    // 监听授权
+    if(origin == location.origin){
+      let Params = new URLSearchParams(source.location.search);
+      let [hash,type] = Params.get('state').split('.'),code = Params.get('code');
+      if(hash == state.hash){
+      onFetch(`login/${type}`,{code:code}).then(data=>{
+          SendMessage('success',{msg:'登录成功',data:data}) 
+        }).catch(msg=>{
+          SendMessage('error',{msg:msg})
+        });
+      }
     }
   })
   // 64fe236d29b069848f0d0402
@@ -170,20 +175,7 @@ onMounted(()=>{
 })
 const getStorage = (key)=>JSON.parse(localStorage.getItem(key) || '[]');
 const setStorage = (key,val=[])=>localStorage.setItem(key,JSON.stringify(val));
-// 监听缓存
-window.onstorage = ({key,url})=>{
-  if(key == 'youloge.sso'){
-    let Params = new URL(url).searchParams;
-    // console.log('onstorage',Params,url);
-    let [hash,type] = Params.get('state').split('.');
-    let code = Params.get('code');
-    if(hash == state.hash){
-      onFetch(`login/${type}`,{code:code}).then(res=>{
-        res.err == 200 ? SendMessage('success',{msg:'登录成功',data:res}) : SendMessage('error',{msg:'登录失败',data:res})
-      })
-    }
-  }
-}
+
 // 本地账户
 const onAccount = ()=>{
   state.account = getStorage('account');
@@ -207,9 +199,9 @@ const onCode = ()=>{
     onFetch('login/code',{mail:mail,captcha:token}).then((data)=>{
       state.toggled.access = data.access
       state.toggled.random = data.random
-    }).catch((err)=>{
+    }).catch(({name,message})=>{
       // 弹窗提示错误
-      alert(err)
+      alert(`${name}:${message}`)
     })
   })
 }
@@ -261,7 +253,6 @@ const onGoogle = ()=>{
   window.open(`https://accounts.google.com/o/oauth2/v2/auth?scope=email&response_type=code&redirect_uri=${url}&client_id=30683847898-g1tn8raicpcedg07j0tdinj0mknd59t3.apps.googleusercontent.com&state=${hash}.google`,
   'Google',
   'popup=1,left=300,top=300,width=500,height=600');
-  console.log('onGoogle')
 }
 // 授权签名
 const onAuthorize = ()=>{
@@ -276,7 +267,11 @@ const onAuthorize = ()=>{
     onToggle();
   })
 }
-// 发起请求 params [] 批量 {} 单条
+/**
+ * 
+ * @resolve 成功返回 data
+ * @reject 失败返回 msg
+ */
 const onFetch = (router,params={})=>(state.loading = true,new Promise((resolve,reject)=>{
   fetch(`https://api.youloge.com/${router}`,{
     method:'post',
@@ -284,8 +279,8 @@ const onFetch = (router,params={})=>(state.loading = true,new Promise((resolve,r
     body:JSON.stringify(params)
   }).then(r=>r.json()).then(({err,msg,data})=>{
     err == 200 ? resolve(data) : reject(msg);
-  }).catch(err=>{
-    reject(err);
+  }).catch((message)=>{
+    reject(message);
   }).finally(()=>{
     state.loading = false;
   })

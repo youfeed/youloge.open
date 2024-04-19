@@ -14,17 +14,18 @@
 import { computed, markRaw, onMounted, reactive, toRefs } from "vue";
 const state = reactive({
   name:'youloge.sso',
-  version:'v1.1.4',
+  version:'v1.1.5',
   referrer:document.referrer,
   uage:navigator.language.toLowerCase(),
 });
 onMounted(()=>{
-  let Params = new URL(location.href).searchParams
-  let method = Params.get('state')
-  let params = Params.get('code')
-  if(method && params){
-    localStorage.setItem('youloge.sso',new Date().getTime())
-  }
+  // let Params = new URL(location.href).searchParams
+  // let method = Params.get('state')
+  // let params = Params.get('code')
+  // if(method && params){
+  //   localStorage.setItem('youloge.sso',)
+  // }
+  window.opener.postMessage({ auth: new Date().getTime() }, `https://${location.host}`);
   // 关闭窗口 与跳转
   window.close();location.href ='/';
 })
