@@ -275,7 +275,7 @@ const onAuthorize = ()=>{
 const onFetch = (router,params={})=>(state.loading = true,new Promise((resolve,reject)=>{
   fetch(`https://api.youloge.com/${router}`,{
     method:'post',
-    headers:{Authorization:`Key ${state.key}`,lang:state.lang,"Content-Type": "application/json"},
+    headers:{Authorization:`Youloge-API ${state.key}`,lang:state.lang,"Content-Type": "application/json"},
     body:JSON.stringify(params)
   }).then(r=>r.json()).then(({err,msg,data})=>{
     err == 200 ? resolve(data) : reject(msg);

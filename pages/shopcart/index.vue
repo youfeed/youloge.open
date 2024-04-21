@@ -420,7 +420,7 @@ const onClose = ()=>SendMessage('error',{msg:'关闭按钮关闭'})
 const onFetch = (route,method,params={})=>(state.loading = true,new Promise((resolve,reject)=>{
   fetch(`https://api.youloge.com/${route}`,{
     method:'post',
-    headers:{key:`Key ${state.key}`,lang:state.lang,"Content-Type": "application/json"},
+    headers:{key:`Youloge-API ${state.key}`,lang:state.lang,"Content-Type": "application/json"},
     body:JSON.stringify({method:method,params:params})
   }).then(r=>r.json()).then(({err,msg,data})=>{
     err == 200 ? resolve(data) : reject(msg);
