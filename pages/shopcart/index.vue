@@ -137,6 +137,7 @@
 <script setup>
 import { computed, onMounted, reactive, toRefs } from "vue";
 const state = reactive({
+  key:'',
   name:'youloge.shopcart',
   version:'v0.3.6',
   hash:location.hash,
@@ -144,7 +145,6 @@ const state = reactive({
   uage:navigator.language.toLowerCase(),
   ref:null,loading:true,
 
-  ukey:'',
   mail:'',
   // 静默登录
   profile:null,
@@ -217,23 +217,23 @@ onMounted(()=>{
 })
 // 监听消息
 const onMessage = ({origin,data,source})=>{
-  let {referrer,hash,ukey} = state;
+  let {referrer,hash,key} = state;
   let {method,params} = data[hash] || {};
   if(referrer.startsWith(origin) && method){
     let work = {
       'init':()=>{
         state.loading = false;
         state.host = new URL(origin).hostname;
-        // Object.assign(state,data); mail money ukey notify
+        // Object.assign(state,data); mail money key notify
         console.log('params',params);
         ({
           uuid:state.uuid = null,
           mail:state.mail = '',
-          ukey:state.ukey = '',
+          key:state.key = '',
           notify:state.notify = '',
           close:state.close = false,
         } = params)
-        params.ukey.length < 64 && SendMessage('error',{msg:'Ukey undefined'});
+        params.key.length < 64 && SendMessage('error',{msg:'key undefined'});
         onReady();
       }
     };
@@ -420,7 +420,7 @@ const onClose = ()=>SendMessage('error',{msg:'关闭按钮关闭'})
 const onFetch = (route,method,params={})=>(state.loading = true,new Promise((resolve,reject)=>{
   fetch(`https://api.youloge.com/${route}`,{
     method:'post',
-    headers:{ukey:state.ukey,lang:state.lang,"Content-Type": "application/json"},
+    headers:{key:`Key ${state.key}`,lang:state.lang,"Content-Type": "application/json"},
     body:JSON.stringify({method:method,params:params})
   }).then(r=>r.json()).then(({err,msg,data})=>{
     err == 200 ? resolve(data) : reject(msg);

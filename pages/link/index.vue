@@ -106,29 +106,6 @@ const screenShot = ()=>{
       console.error('oops, something went wrong!', error);
   });
 
-  // const svg = document.createElement('svg');
-  // svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-  // svg.width = '100%';svg.height = '100%'
-  // const foreignObject = document.createElement('foreignObject');
-  // foreignObject.x = 0;foreignObject.y=0;foreignObject.width = '100%';foreignObject.height = '100%'
-  // svg.appendChild(foreignObject);foreignObject.appendChild(copy);
-  // document.body.appendChild(svg)
-  // console.log(svg)
-  // const string = new XMLSerializer().serializeToString(svg)
-  // const xml=`<?xml version="1.0" standalone="no"?>\r\n${string}`;//生成xml文件
-  // // const src=`data:image/svg+xml;chartset=utf-8,${encodeURIComponent(xml)}`;//生成src
-  // const src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(xml))); //给图片对象写入base64编码的svg流
-  // // const src=`data:image/svg+xml;base64,${window.btoa(unescape(encodeURIComponent(xml)))}`;
-  // // var svgs = new Blob([string], {type: "image/svg+xml;charset=utf-8"});
-  // // var urls = URL.createObjectURL(svgs);
-  // const img=new Image();img.src=src;img.title="12"
-  // document.body.appendChild(img);
-  // var canvas = document.createElement('canvas');
-  // document.body.appendChild(canvas);
-  // img.onload = function () {
-  //   var ctx = canvas.getContext('2d');
-  //   ctx.drawImage(img, 0, 0);
-  // };
 }
 const {wrap,uuid,urls,author,qrcode} = toRefs(state)
 </script>

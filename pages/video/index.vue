@@ -47,7 +47,7 @@ const state = reactive({
   src:'',
   //
   uuid:null,
-  ukey:null,
+  key:null,
   poster:null,
   mp4:null,
   flv:null,
@@ -60,7 +60,7 @@ const state = reactive({
 // https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/dashjs/4.3.0/dash.all.min.js
 onMounted(()=>{
   window.self === window.top ? location.href ='/' : SendMessage('ready',{msg:'youloge.video is ready'});
-  const {root,referrer,hash,ukey} = state;
+  const {root,referrer,hash,key} = state;
   root.addEventListener('contextmenu',onContextmenu);
   window.addEventListener('message',({origin,data,source})=>{
     let {method,params} = data[hash] || {};
@@ -70,7 +70,7 @@ onMounted(()=>{
         state.host = new URL(origin).hostname;
         ({
           close:state.close = false,
-          ukey:state.ukey,
+          key:state.key,
           uuid:state.uuid = null,
           poster:state.poster = null,
           mp4:state.mp4 = null,
@@ -78,7 +78,7 @@ onMounted(()=>{
           dash:state.dash = null,
           m3u8:state.m3u8 = null,
         } = params)
-        params.ukey.length < 64 && SendMessage('error',{msg:'Ukey undefined'});
+        params.key.length < 64 && SendMessage('error',{msg:'key undefined'});
         onReady();
       }
     };

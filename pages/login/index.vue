@@ -87,8 +87,8 @@
 
 <script setup>
 /**
- * 相同Ukey 直接快捷登录
- * 其他Ukey 免输入邮箱->验证码->登录
+ * 相同key 直接快捷登录
+ * 其他key 免输入邮箱->验证码->登录
  */
 import { computed, markRaw, onMounted, reactive, toRefs } from "vue";
 const state = reactive({
@@ -97,7 +97,7 @@ const state = reactive({
   hash:location.hash.split('#').join(''),
   referrer:document.referrer,
   uage:navigator.language.toLowerCase(),
-  ukey:'',
+  key:'',
   mask:false,
   loading:true,
   account:[], // 本地缓存账户
@@ -134,19 +134,19 @@ onMounted(()=>{
   // 禁止本地
   window.self === window.top ? location.href ='/' : SendMessage('ready',{msg:'youloge.login is ready'});
   // 接收初始参数
-  const {referrer,hash,ukey} = state;
+  const {referrer,hash,key} = state;
   window.addEventListener('message',({origin,data,source})=>{
     let {method,params} = data[hash] || {};
-    if(referrer.startsWith(origin) && method && ukey == ''){
+    if(referrer.startsWith(origin) && method && key == ''){
       let work = {
         'init':()=>{
           state.host = new URL(origin).hostname;
           ({
-            ukey:state.ukey,
+            key:state.key,
             close:state.close = false,
             uuid:state.uuid = null 
           } = params)
-          params.ukey.length < 64 && SendMessage('error',{msg:'Ukey undefined'});
+          params.key.length < 64 && SendMessage('error',{msg:'key undefined'});
           state.loading = false;
           onAccount();
         }
@@ -275,7 +275,7 @@ const onAuthorize = ()=>{
 const onFetch = (router,params={})=>(state.loading = true,new Promise((resolve,reject)=>{
   fetch(`https://api.youloge.com/${router}`,{
     method:'post',
-    headers:{ukey:state.ukey,lang:state.lang,"Content-Type": "application/json"},
+    headers:{Authorization:`Key ${state.key}`,lang:state.lang,"Content-Type": "application/json"},
     body:JSON.stringify(params)
   }).then(r=>r.json()).then(({err,msg,data})=>{
     err == 200 ? resolve(data) : reject(msg);
