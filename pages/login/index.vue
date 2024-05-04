@@ -217,8 +217,8 @@ const onSubmit = ()=>{
     let index = state.account.findIndex(item=>item.uuid == uuid);
     index == -1 ? state.account.unshift(data) : state.account[index] = data;
     setStorage('account',state.account);
-    // 直接授权
-    onAuthorize();
+    // 登录结果
+    SendMessage('success',{msg:'登录成功',data:data}) 
   }).catch((err)=>{})
 }
 // 快捷登录 - 
